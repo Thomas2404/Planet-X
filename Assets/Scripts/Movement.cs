@@ -16,6 +16,7 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame

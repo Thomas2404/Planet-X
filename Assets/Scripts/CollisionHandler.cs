@@ -10,7 +10,7 @@ public class CollisionHandler : MonoBehaviour
 
                 break;
             case "Finish":
-                LoadNextLevel();
+                StartLevelLoadSequence();
                 break;
             case "Fuel":
 
@@ -25,6 +25,11 @@ public class CollisionHandler : MonoBehaviour
     void StartCrashSequence() {
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", 1f);
+    }
+
+    void StartLevelLoadSequence() {
+        GetComponent<Movement>().enabled = false;
+        Invoke("LoadNextLevel", 1f);
     }
 
     void LoadNextLevel() {
