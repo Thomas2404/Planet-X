@@ -3,6 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] ParticleSystem crashParticles;
+
+    bool collisionDisabled = false;
+
     void OnCollisionEnter(Collision collision) {
         
         switch (collision.gameObject.tag) {
@@ -17,18 +23,31 @@ public class CollisionHandler : MonoBehaviour
                 break;
             default:
                 StartCrashSequence();
-                
-            break;
+                break;
+        }
+    }
+
+    void Update() {
+        RespondToDebugKeys();
+    }
+
+    void RespondToDebugKeys() {
+        if (Input.GetKeyDown(KeyCode.L)) {
+            LoadNextLevel();
+        } else if (Input.GetKeyDown(KeyCode.C)) {
+            collisionDisabled = !collisionDisabled; // toggle collision
         }
     }
 
     void StartCrashSequence() {
         GetComponent<Movement>().enabled = false;
+        crashParticles.Play();
         Invoke("ReloadLevel", 1f);
     }
 
     void StartLevelLoadSequence() {
         GetComponent<Movement>().enabled = false;
+        successParticles.Play();
         Invoke("LoadNextLevel", 1f);
     }
 

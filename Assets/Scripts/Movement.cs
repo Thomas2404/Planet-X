@@ -9,7 +9,9 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float mainThrust = 1000f;
     [SerializeField] float rotationThrust = 20f;
-    
+    [SerializeField] ParticleSystem mainBooster;
+    [SerializeField] ParticleSystem rightBooster;
+    [SerializeField] ParticleSystem leftBooster;
 
     // Start is called before the first frame update
     void Start()
@@ -29,25 +31,57 @@ public class Movement : MonoBehaviour
 
     void ProcessThrust() {
         if (Input.GetKey(KeyCode.Space)) {
-            if (!audioSource.isPlaying) {
-                audioSource.Play();
-            }
-            rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+            StartThrusting();
         } else {
-            audioSource.Stop();
+            StopThrusting();
         }     
     } 
 
     void ProcessRotation() {
     
         if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) {
-
+            StopThrustRotation();
         } else if (Input.GetKey(KeyCode.A)) {
-            ApplyRotation(rotationThrust);
-
+            StartThrustingLeft();
         } else if (Input.GetKey(KeyCode.D)) {
-           ApplyRotation(-rotationThrust);
+           StartThrustingRight();
+        } else {
+            StopThrustRotation();
         }
+    }
+
+    void StopThrusting() {
+        audioSource.Stop();
+        mainBooster.Stop();
+    }
+
+    void StartThrustingRight() {
+        ApplyRotation(-rotationThrust);
+           if (!leftBooster.isPlaying) {
+                leftBooster.Play();
+            }
+    }
+
+    void StartThrustingLeft() {
+        ApplyRotation(rotationThrust);
+            if (!rightBooster.isPlaying) {
+                rightBooster.Play();
+            }
+    }
+
+    void StartThrusting() {
+        rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+            if (!mainBooster.isPlaying) {
+               mainBooster.Play(); 
+            }
+    }
+
+    void StopThrustRotation() {
+        rightBooster.Stop();
+        leftBooster.Stop();
     }
 
     void ApplyRotation(float rotationThisFrame) {
