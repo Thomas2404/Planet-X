@@ -8,8 +8,11 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] ParticleSystem crashParticles;
 
     bool collisionDisabled = false;
+    bool isTransitioning = false;
 
     void OnCollisionEnter(Collision collision) {
+
+        if (isTransitioning || collisionDisabled) { return; }
         
         switch (collision.gameObject.tag) {
             case "Friendly":
@@ -40,12 +43,14 @@ public class CollisionHandler : MonoBehaviour
     }
 
     void StartCrashSequence() {
+        isTransitioning = true;
         GetComponent<Movement>().enabled = false;
         crashParticles.Play();
         Invoke("ReloadLevel", 1f);
     }
 
     void StartLevelLoadSequence() {
+        isTransitioning = true;
         GetComponent<Movement>().enabled = false;
         successParticles.Play();
         Invoke("LoadNextLevel", 1f);
@@ -57,9 +62,12 @@ public class CollisionHandler : MonoBehaviour
             nextSceneIndex = 0;
         }
         SceneManager.LoadScene(nextSceneIndex);
+        isTransitioning = false;
     }
+
     void ReloadLevel() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+        isTransitioning = false;
     }
 }
