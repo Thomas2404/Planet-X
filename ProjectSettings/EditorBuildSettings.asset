@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Under.unity
     guid: 4c9c77174ec05f14a9fdfc7d2a8ec646
+  - enabled: 1
+    path: Assets/Scenes/Movement UpDown.unity
+    guid: 3a8fc1f530de7904dbdb559ab4607f6f
   m_configObjects: {}
