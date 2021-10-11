@@ -19,7 +19,16 @@ public class CollisionHandler : MonoBehaviour
 
                 break;
             case "Finish":
-                StartLevelLoadSequence();
+
+                Vector3 impulse = collision.impulse;
+                Debug.Log(impulse);
+
+                if (impulse.y > 1f) {
+                    StartCrashSequence();
+                    Debug.Log("You were moving too fast and crashed!");
+                } else {
+                    StartLevelLoadSequence();
+                }
                 break;
             case "Fuel":
 
